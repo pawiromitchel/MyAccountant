@@ -31,7 +31,7 @@ public class FinancialDAO extends SQLiteOpenHelper{
 
 
     private static final String SQL_USER_TABLE_QUERY = "create table user (id INTEGER PRIMARY KEY, username STRING NOT NULL UNIQUE, password STRING NOT NULL)";
-    // private static final String SQL_TRANSACTION_TABLE_QUERY = "create table transaction (id INTEGER PRIMARY KEY, amount REAL NOT NULL, type STRING NOT NULL)";
+    private static final String SQL_TRANSACTION_TABLE_QUERY = "create table transaction (id INTEGER PRIMARY KEY, amount REAL NOT NULL, type STRING NOT NULL)";
 
     public FinancialDAO(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
