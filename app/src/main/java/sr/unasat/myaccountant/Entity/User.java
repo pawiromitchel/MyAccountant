@@ -1,8 +1,9 @@
-package sr.unasat.myaccountant.Entity;
+package sr.unasat.myaccountant.entity;
 
 /**
- * Created by mnarain on 2/4/2016.
+ * Created by mpawirodinomo on 2/7/2018.
  */
+
 public class User {
     private long id;
     private String userName;

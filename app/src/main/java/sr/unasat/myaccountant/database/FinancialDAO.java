@@ -8,14 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.List;
 
-import sr.unasat.myaccountant.Entity.User;
+import sr.unasat.myaccountant.entity.User;
 
 /**
- * Created by mnarain on 2/4/2016.
- * See https://www.sqlite.org/ for sqlite functionalities
+ * Created by mpawirodinomo on 2/7/2018.
  */
-public class FinancialDAO extends SQLiteOpenHelper {
 
+public class FinancialDAO extends SQLiteOpenHelper{
     private static final String DATABASE_NAME = "financial.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -31,8 +30,8 @@ public class FinancialDAO extends SQLiteOpenHelper {
     public static final String TRANSACTION_TYPE_VALUE_INCOME = "income";
 
 
-    private static final String SQL_USER_TABLE_QUERY = "create table user(id INTEGER PRIMARY KEY, username STRING NOT NULL UNIQUE, password STRING NOT NULL)";
-    private static final String SQL_TRANSACTION_TABLE_QUERY = "create table transaction(id INTEGER PRIMARY KEY, amount REAL NOT NULL, type STRING NOT NULL)";
+    private static final String SQL_USER_TABLE_QUERY = "create table user (id INTEGER PRIMARY KEY, username STRING NOT NULL UNIQUE, password STRING NOT NULL)";
+    // private static final String SQL_TRANSACTION_TABLE_QUERY = "create table transaction (id INTEGER PRIMARY KEY, amount REAL NOT NULL, type STRING NOT NULL)";
 
     public FinancialDAO(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,12 +50,10 @@ public class FinancialDAO extends SQLiteOpenHelper {
         insertOneRecord(USER_TABLE, contentValues);
     }
 
-    ;
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_USER_TABLE_QUERY);
-        db.execSQL(SQL_TRANSACTION_TABLE_QUERY);
+        // db.execSQL(SQL_TRANSACTION_TABLE_QUERY);
     }
 
     @Override
@@ -90,6 +87,18 @@ public class FinancialDAO extends SQLiteOpenHelper {
         User user = null;
         SQLiteDatabase db = getReadableDatabase();
         String sql = String.format("select * from %s", USER_TABLE);
+        Cursor cursor = db.rawQuery(sql, null);
+        if (cursor.moveToFirst()) {
+            user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
+        }
+        db.close();
+        return user;
+    }
+
+    public User authenticateUser(String username, String password) {
+        User user = null;
+        SQLiteDatabase db = getReadableDatabase();
+        String sql = String.format("select * from %s where username = '%s' AND password = '%s'", USER_TABLE, username, password);
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor.moveToFirst()) {
             user = new User(cursor.getInt(0), cursor.getString(1), cursor.getString(2));
